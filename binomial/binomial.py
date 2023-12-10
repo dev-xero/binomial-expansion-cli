@@ -1,12 +1,75 @@
+from math import factorial as fact
+from fractions import Fraction
+
+
 # Binomial Expansion Class
 class BinomialExpansion:
-    def __init__(self, args):
-        self.verify_arguments(args.get("exp"))          # verify arguments
-        args_array = args.get("exp").split()            # split arguments
+    def __init__(self, args: dict[str]):
+        """Initialize class"""
+        self.verify_arguments(args.get("exp"))  # verify arguments
+        args_array = args.get("exp").split()  # split arguments
         self.args = self.extract_variables(args_array)  # extract variables
 
+    def expand(self):
+        n = self.args.get("n")
+        if n > 18:
+            print("Cannot expand expressions raised to more than 18")
+            exit(1)
+
+        a = self.args.get("a")
+        b = self.args.get("b")
+        operand = self.args.get("operand")
+
+        res = []
+        for k in range(self.args.get("n")+1):
+            term = []
+            variables = []
+            scaler = self.combination(n, k)
+            resolved_a = self.resolve(a, n-k)
+            resolved_b = self.resolve(b, k)
+
+            if len(resolved_a) > 1:
+                variables.append(resolved_a[1])
+            if len(resolved_b) > 1:
+                variables.append(resolved_b[1])
+
+            term.append(scaler*resolved_a[0]*resolved_b[0])  # constant terms
+
+            if sum(variables) == 1:
+                term.append(f"x")
+            else:
+                term.append(f"x^{sum(variables)}")
+
+            res.append(f"{term[0]}{term[1]}")
+
+            if operand == "-":
+                if k % 2 == 0:
+                    res.append("-")
+                else:
+                    res.append("+")
+            else:
+                res.append("+")
+
+        res.pop()
+        print("\nExpansion:",  " ".join(res))
+
     @staticmethod
-    def verify_arguments(args):
+    def resolve(term: str, power: int):
+        res = []
+        terms = term.split("x")
+        res.append(pow(float(Fraction(terms[0])), power))
+        if len(terms) == 2:
+            res.append(power)
+
+        return res
+
+    @staticmethod
+    def combination(n: int, r: int):
+        return fact(n) / (fact(r) * fact(n - r))
+
+    @staticmethod
+    def verify_arguments(args: [str]):
+        """Verify input arguments"""
         required_chars = {'(', ')', '^'}
         if len(args) < 3 or not all(char in args for char in required_chars):
             if '+' not in args or '-' not in args:
@@ -14,15 +77,12 @@ class BinomialExpansion:
                 exit(1)  # terminate
 
     @staticmethod
-    def extract_variables(args):
+    def extract_variables(args: [str]):
         """Extract variables from the args"""
         args_half = args[2].split(")")
         return {
             "operand": args[1],
             "a": args[0][1:],
             "b": args_half[0],
-            "n": args_half[1][1:]
+            "n": int(args_half[1][1:])
         }
-
-    def expand(self):
-        print(self.args.get("b"))
