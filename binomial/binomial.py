@@ -6,8 +6,8 @@ from fractions import Fraction
 class BinomialExpansion:
     def __init__(self, args: dict[str]):
         """Initialize class"""
-        self.verify_arguments(args.get("exp"))  # verify arguments
-        args_array = args.get("exp").split()  # split arguments
+        self.verify_arguments(args.get("exp"))          # verify arguments
+        args_array = args.get("exp").split()            # split arguments
         self.args = self.extract_variables(args_array)  # extract variables
 
     def expand(self):
@@ -35,10 +35,14 @@ class BinomialExpansion:
 
             term.append(scaler*resolved_a[0]*resolved_b[0])  # constant terms
 
-            if sum(variables) == 1:
-                term.append(f"x")
+            if n-k != 0:
+                if sum(variables) == 1:
+                    term.append(f"x")
+                else:
+                    term.append(f"x^{sum(variables)}")
+
             else:
-                term.append(f"x^{sum(variables)}")
+                term.append("")
 
             res.append(f"{term[0]}{term[1]}")
 
