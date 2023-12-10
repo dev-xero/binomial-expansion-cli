@@ -6,5 +6,6 @@ In essence, any valid expression of the form $\(a + b\)^n$ can be expanded using
 
 ## Usage
 ```bash
-python main.py (a + b)^k
+python main.py --exp (a + b)^k
 ```
+--exp, is a flag telling the CLI the expression to expand
