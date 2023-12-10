@@ -1,6 +1,9 @@
+from cli.cli import CLI
+
+
 # main
 def main():
-    print("Binomial Expansion CLI tool")
+    CLI()
 
 
 if __name__ == "__main__":
