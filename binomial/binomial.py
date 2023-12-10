@@ -35,7 +35,13 @@ class BinomialExpansion:
             if len(resolved_b) > 1:
                 variables.append(resolved_b[1])
 
-            term.append(scaler*resolved_a[0]*resolved_b[0])  # constant terms
+            coefficient = scaler * resolved_a[0] * resolved_b[0]  # the coefficient
+
+            # display as fraction
+            if "." in str(coefficient):
+                term.append(Fraction(coefficient))
+            else:
+                term.append(coefficient)
 
             # prevent displaying x^0 or x^1
             if n-k != 0:
