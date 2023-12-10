@@ -1,7 +1,7 @@
 from cli.cli import CLI
 
 
-# main
+# Main
 def main():
     CLI()
 

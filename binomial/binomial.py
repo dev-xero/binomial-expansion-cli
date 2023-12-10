@@ -11,10 +11,11 @@ class BinomialExpansion:
         self.args = self.extract_variables(args_array)  # extract variables
 
     def expand(self):
+        """Expand expression"""
         n = self.args.get("n")
         if n > 18:
             print("Cannot expand expressions raised to more than 18")
-            exit(1)
+            exit(1)  # terminate
 
         a = self.args.get("a")
         b = self.args.get("b")
@@ -28,6 +29,7 @@ class BinomialExpansion:
             resolved_a = self.resolve(a, n-k)
             resolved_b = self.resolve(b, k)
 
+            # get the powers of x
             if len(resolved_a) > 1:
                 variables.append(resolved_a[1])
             if len(resolved_b) > 1:
@@ -35,6 +37,7 @@ class BinomialExpansion:
 
             term.append(scaler*resolved_a[0]*resolved_b[0])  # constant terms
 
+            # prevent displaying x^0 or x^1
             if n-k != 0:
                 if sum(variables) == 1:
                     term.append(f"x")
@@ -54,11 +57,12 @@ class BinomialExpansion:
             else:
                 res.append("+")
 
-        res.pop()
+        res.pop()  # remove redundant operand
         print("\nExpansion:",  " ".join(res))
 
     @staticmethod
     def resolve(term: str, power: int):
+        """Resolve the term into constant and variable parts"""
         res = []
         terms = term.split("x")
         res.append(pow(float(Fraction(terms[0])), power))
@@ -69,6 +73,7 @@ class BinomialExpansion:
 
     @staticmethod
     def combination(n: int, r: int):
+        """Return the combination of n in r"""
         return fact(n) / (fact(r) * fact(n - r))
 
     @staticmethod
